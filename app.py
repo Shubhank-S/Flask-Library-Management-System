@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,render_template
 from dotenv import load_dotenv
 from db.database import db ,init_app
 import os
@@ -18,8 +18,8 @@ init_app(app)
 PORT = os.getenv('PORT')
 
 @app.route("/")
-def startapp():
-    return "Flask is Running"
+def homePage():
+    return render_template('home.html')
 
 
 if __name__ == "__main__":

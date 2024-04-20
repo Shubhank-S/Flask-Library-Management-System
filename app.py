@@ -1,7 +1,10 @@
+import os
 from flask import Flask
 from dotenv import load_dotenv
+from flask_login import LoginManager
 from db.database import db,initialize_database
-import os
+from models.UserModel import User
+
 
 app = Flask(__name__)
 
@@ -17,6 +20,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 # Initialize the database with the Flask app
 
 initialize_database(app)
+
+# Initialize user login management
+# Initialize Flask-Login
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# User loader function
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 # PORT
 

@@ -1,6 +1,6 @@
-from flask import Flask,render_template
+from flask import Flask
 from dotenv import load_dotenv
-from db.database import db ,init_app
+from db.database import db,initialize_database
 import os
 
 app = Flask(__name__)
@@ -11,7 +11,12 @@ load_dotenv()
 
 # Flask App initalize with SQLALCHEMY
 
-init_app(app)
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+
+# Initialize the database with the Flask app
+
+initialize_database(app)
 
 # PORT
 
@@ -19,8 +24,7 @@ PORT = os.getenv('PORT')
 
 @app.route("/")
 def homePage():
-    return render_template('home.html')
-
+    return "hello"
 
 if __name__ == "__main__":
     app.run(debug=True,port=PORT)

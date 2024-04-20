@@ -1,14 +1,21 @@
 from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
-
+# Create a database object
 db = SQLAlchemy()
 
-def init_app(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
-  
+# Function to initialize the database
+def initialize_database(app):
+    # Load the database URI from environment variables
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+    
+    # Bind the database to the Flask app
     db.init_app(app)
+
+    # Create all tables in the database
+    with app.app_context():
+        db.create_all()

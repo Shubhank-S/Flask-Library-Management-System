@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from flask_login import LoginManager
 from db.database import db,initialize_database
 from models.UserModel import User
+from models.BookModel import Book
 
 
 app = Flask(__name__)

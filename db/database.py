@@ -12,7 +12,7 @@ db = SQLAlchemy()
 def initialize_database(app):
     # Load the database URI from environment variables
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-    
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     # Bind the database to the Flask app
     db.init_app(app)
 

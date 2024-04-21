@@ -38,9 +38,13 @@ def load_user(user_id):
 
 PORT = os.getenv('PORT')
 
-@app.route("/")
-def homePage():
-    return "This is home page"
+# Routes
+
+@app.route('/')
+@login_required
+def index():
+    books = Book.query.all()
+    return render_template('index.html', books=books)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

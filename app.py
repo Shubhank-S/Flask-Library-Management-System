@@ -110,6 +110,13 @@ def update_book(book_id):
         return redirect(url_for('index'))
     return render_template('update_book.html', book=book)
 
+@app.route('/delete/<int:book_id>')
+def delete_book(book_id):
+    book = Book.query.get_or_404(book_id)
+    db.session.delete(book)
+    db.session.commit()
+    return redirect(url_for('index'))
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=PORT)

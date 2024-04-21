@@ -1,7 +1,7 @@
 import os
-from flask import Flask
+from flask import Flask,render_template, request, redirect, url_for,flash
 from dotenv import load_dotenv
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from db.database import db,initialize_database
 from models.UserModel import User
 from models.BookModel import Book
@@ -40,7 +40,24 @@ PORT = os.getenv('PORT')
 
 @app.route("/")
 def homePage():
-    return "hello"
+    return "This is home page"
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if User.query.filter_by(username=username).first():
+            flash('Username already exists')
+            return redirect(url_for('register'))
+        user = User(username=username)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        flash('Registration successful! Please log in.')
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=PORT)

@@ -100,6 +100,16 @@ def add_book():
         return redirect(url_for('index'))
     return render_template('add_book.html')
 
+@app.route('/update/<int:book_id>', methods=['GET', 'POST'])
+def update_book(book_id):
+    book = Book.query.get_or_404(book_id)
+    if request.method == 'POST':
+        book.title = request.form['title']
+        book.author = request.form['author']
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('update_book.html', book=book)
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=PORT)

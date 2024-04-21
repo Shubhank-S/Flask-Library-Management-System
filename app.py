@@ -89,5 +89,17 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/add', methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        title = request.form['title']
+        author = request.form['author']
+        new_book = Book(title=title, author=author)
+        db.session.add(new_book)
+        db.session.commit()
+        return redirect(url_for('index'))
+    return render_template('add_book.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True,port=PORT)

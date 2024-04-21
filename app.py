@@ -76,6 +76,18 @@ def login():
         return redirect(url_for('login'))
     return render_template('login.html')
 
+@app.route('/logout')
+@login_required
+def logout():
+    user = current_user
+    # Deleting user from database
+    db.session.delete(user)
+    db.session.commit()
+
+    logout_user()
+    flash('Logged out and account deleted successfully.')
+    return redirect(url_for('login'))
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=PORT)

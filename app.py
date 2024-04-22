@@ -44,7 +44,9 @@ PORT = os.getenv('PORT')
 @login_required
 def index():
     books = Book.query.all()
-    return render_template('index.html', books=books)
+    # Query the count of books in the database
+    book_count = Book.query.count()
+    return render_template('index.html', books=books, book_count=book_count)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -79,14 +81,22 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    user = current_user
-    # Deleting user from database
-    db.session.delete(user)
-    db.session.commit()
-
+    # Logging out the user without deleting the database entry
     logout_user()
-    flash('Logged out and account deleted successfully.')
+    flash('Logged out successfully.')
     return redirect(url_for('login'))
+
+# @app.route('/logout')
+# @login_required
+# def logout():
+#     user = current_user
+#     # Deleting user from database
+#     db.session.delete(user)
+#     db.session.commit()
+
+#     logout_user()
+#     flash('Logged out and account deleted successfully.')
+#     return redirect(url_for('login'))
 
 
 @app.route('/add', methods=['GET', 'POST'])

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Library Management</title>
+    <title>Library Management System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -12,6 +12,8 @@
             <button type="submit">Search</button>
         </form>
         <h2>Books:</h2>
+        <!-- Display the book count -->
+        <p>Total number of books: {{ book_count }}</p>
         <table>
             <thead>
                 <tr>

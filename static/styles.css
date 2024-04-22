@@ -5,6 +5,7 @@
 /* Table styling */
 body h1{
     text-align: center;
+    font-family: sans-serif;
 }
 table {
     width: 100%;

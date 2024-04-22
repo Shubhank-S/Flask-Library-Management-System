@@ -117,6 +117,23 @@ def delete_book(book_id):
     db.session.commit()
     return redirect(url_for('index'))
 
+@app.route('/search', methods=['GET'])
+@login_required
+def search():
+    query = request.args.get('query')
+    if query:
+        # Search for books where the title or author contains the query
+        search_results = Book.query.filter(
+            (Book.title.ilike(f'%{query}%')) | 
+            (Book.author.ilike(f'%{query}%'))
+        ).all()
+        return render_template('index.html', books=search_results)
+    else:
+        # If no query provided, redirect to index page
+        flash("Please enter a search query", "error")
+        return redirect(url_for('index'))
+
+
 
 if __name__ == "__main__":
     app.run(debug=True,port=PORT)
